@@ -1,0 +1,13 @@
+<div class="overlay" (click)="onClose ? onClose() : doNothing()">
+  <div
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="bar">
+      <img [src]="`assets/svg/${icon}.svg`" alt="" />
+    </div>
+    <div class="content"><ng-content></ng-content></div>
+  </div>
+</div>

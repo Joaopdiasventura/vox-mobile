@@ -1,0 +1,133 @@
+@use "../../../../theme/variables.scss" as *;
+
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+
+/* ───────────────── overlay ───────────────── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(
+    red($deep-black),
+    green($deep-black),
+    blue($deep-black),
+    0.35
+  );
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ───────────────── modal ───────────────── */
+.modal {
+  width: min(92vw, 560px);
+  border-radius: 16px;
+  overflow: hidden;
+  background: $light-gray;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.12);
+  transform: translateY(0) scale(0.98);
+  opacity: 0;
+  animation: modal-in 180ms ease-out forwards;
+  display: flex;
+  flex-direction: column;
+
+  .content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(20px, 4vw, 40px) clamp(16px, 5vw, 48px);
+
+    /* 🧩 Padding responsivo */
+    padding: clamp(20px, 4vw, 40px) clamp(16px, 5vw, 48px);
+
+    /* conteúdo projetado (via ng-content) */
+    ::ng-deep h2 {
+      color: $primary-red;
+      margin: 0;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    ::ng-deep p {
+      color: $medium-gray-2;
+      font-size: clamp(14px, 2.6vw, 16px);
+      text-align: center;
+      margin: 0;
+    }
+  }
+}
+
+/* ───────────────── barra superior ───────────────── */
+.bar {
+  display: grid;
+  place-items: center;
+  height: clamp(44px, 9vw, 56px);
+  background: $dark-gray;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+  img {
+    display: block;
+    width: clamp(22px, 5vw, 28px);
+    height: clamp(22px, 5vw, 28px);
+  }
+}
+
+/* ───────────────── animações e acessibilidade ───────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .modal {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal.closing {
+  animation: modal-out 140ms ease-in forwards;
+}
+@keyframes modal-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+/* ───────────────── responsividade ───────────────── */
+@media (min-width: 768px) {
+  .modal {
+    width: min(88vw, 600px);
+  }
+}
+
+/* ───────────────── gerais ───────────────── */
+.overlay,
+.modal {
+  pointer-events: auto;
+}
+
+:root {
+  --modal-bg: var(--ion-color-light);
+  --modal-title: var(--ion-color-primary);
+  --modal-subtitle: var(--ion-color-medium);
+}

@@ -1,0 +1,76 @@
+// For information on how to create your own theme, please see:
+// http://ionicframework.com/docs/theming/
+:root {
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light;
+  }
+}
+
+$primary-red: #b20000;
+$dark-red: #860909;
+$deep-black: #010108;
+
+$pure-white: #fbfbff;
+$light-gray: #f7f7f7;
+$medium-gray: #cecece;
+$dark-gray: #111111;
+
+$light-gray-2: #cccccc;
+$medium-gray-2: #919191;
+
+// Ionic theme color mapping to project palette
+// Primary palette (mapped to project red)
+$primary-red-shade: darken($primary-red, 10%);
+$primary-red-tint: lighten($primary-red, 10%);
+
+// Secondary palette (mapped to darker red)
+$secondary-red: $dark-red;
+$secondary-red-shade: darken($secondary-red, 10%);
+$secondary-red-tint: lighten($secondary-red, 10%);
+
+// Grays
+$medium-gray-2-shade: darken($medium-gray-2, 10%);
+$medium-gray-2-tint: lighten($medium-gray-2, 10%);
+
+:root {
+  // App background and text
+  --ion-background-color: #{$pure-white};
+  --ion-text-color: #{$dark-gray};
+
+  // Primary
+  --ion-color-primary: #{$primary-red};
+  --ion-color-primary-rgb: #{red($primary-red)}, #{green($primary-red)},
+    #{blue($primary-red)};
+  --ion-color-primary-contrast: #{$pure-white};
+  --ion-color-primary-contrast-rgb: #{red($pure-white)}, #{green($pure-white)},
+    #{blue($pure-white)};
+  --ion-color-primary-shade: #{$primary-red-shade};
+  --ion-color-primary-tint: #{$primary-red-tint};
+
+  // Secondary
+  --ion-color-secondary: #{$secondary-red};
+  --ion-color-secondary-rgb: #{red($secondary-red)}, #{green($secondary-red)},
+    #{blue($secondary-red)};
+  --ion-color-secondary-contrast: #{$pure-white};
+  --ion-color-secondary-contrast-rgb: #{red($pure-white)}, #{green($pure-white)},
+    #{blue($pure-white)};
+  --ion-color-secondary-shade: #{$secondary-red-shade};
+  --ion-color-secondary-tint: #{$secondary-red-tint};
+
+  // Medium (used for borders/labels)
+  --ion-color-medium: #{$medium-gray-2};
+  --ion-color-medium-rgb: #{red($medium-gray-2)}, #{green($medium-gray-2)},
+    #{blue($medium-gray-2)};
+  --ion-color-medium-contrast: #{$deep-black};
+  --ion-color-medium-contrast-rgb: #{red($deep-black)}, #{green($deep-black)},
+    #{blue($deep-black)};
+  --ion-color-medium-shade: #{$medium-gray-2-shade};
+  --ion-color-medium-tint: #{$medium-gray-2-tint};
+
+  // Light/Dark helpers
+  --ion-color-light: #{$light-gray};
+  --ion-color-dark: #{$dark-gray};
+}
