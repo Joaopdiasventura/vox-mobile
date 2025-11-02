@@ -15,11 +15,4 @@ export const routes: Routes = [
         (m) => m.ValidatePageComponent
       ),
   },
-  {
-    path: 'validate-account/:email',
-    loadComponent: () =>
-      import('../account/validation-page/validation-page.component').then(
-        (m) => m.ValidationPageComponent
-      ),
-  },
 ];
