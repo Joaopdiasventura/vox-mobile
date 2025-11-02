@@ -68,3 +68,9 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+/desktop/release/win-unpacked
+/desktop/release/*.yml
+/desktop/release/*.yaml
+/desktop/release/*.blockmap
+/desktop/release/*.exe

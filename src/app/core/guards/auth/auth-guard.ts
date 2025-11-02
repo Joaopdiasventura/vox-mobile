@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
 
   public canActivate(): Observable<boolean | UrlTree> {
     return this.authService.user$.pipe(
-      switchMap((user) => this.connectUser(user))
+      switchMap((user) => this.connectUser(user)),
     );
   }
 
@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
 
     return this.userService.decodeToken(token).pipe(
       map((decodedUser) => !!this.authService.updateUserData(decodedUser)),
-      catchError(() => of(this.router.parseUrl('/user/access')))
+      catchError(() => of(this.router.parseUrl('/user/access'))),
     );
   }
 }

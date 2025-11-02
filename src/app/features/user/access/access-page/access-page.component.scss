@@ -1,4 +1,5 @@
-@use "../../../../../theme/variables.scss" as *;
+@use 'sass:color';
+@use '../../../../../theme/variables.scss' as *;
 
 :host {
   display: block;
@@ -21,21 +22,11 @@
       width: 75%;
       max-width: 420px;
       margin-bottom: 20px;
+      color: $pure-white;
     }
 
     ion-segment-button::part(indicator-background) {
-      display: none;
-    }
-
-    .segment-button-checked.md::part(native) {
-      color: $pure-white;
       background-color: $primary-red;
-      border-radius: 10px;
-    }
-
-    ion-segment-button.md::part(native) {
-      border-radius: 10px;
-      color: #000;
     }
 
     .forms-wrapper {
@@ -48,6 +39,7 @@
       overflow: hidden;
 
       .forms-container {
+        background-color: var(--ion-color-light);
         display: flex;
         width: 100%;
         align-items: flex-start;
@@ -63,6 +55,7 @@
         flex-shrink: 0;
 
         ion-list {
+          background-color: var(--ion-color-light);
           display: flex;
           flex-direction: column;
           gap: 1vh;
@@ -113,8 +106,11 @@
             --border-radius: 10px;
             --border-width: 0px;
             --background: #{$primary-red};
-            --background-activated: #{darken($primary-red, 6%)};
-            --background-focused: #{darken($primary-red, 3%)};
+            --background-activated: #{color.adjust(
+                $primary-red,
+                $lightness: -6%
+              )};
+            --background-focused: #{color.adjust($primary-red, $lightness: -3%)};
             --color: #{$pure-white};
             --padding-top: 12px;
             --padding-bottom: 12px;

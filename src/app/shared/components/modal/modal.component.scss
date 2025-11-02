@@ -1,35 +1,33 @@
-@use "../../../../theme/variables.scss" as *;
+@use 'sass:color';
+@use '../../../../theme/variables.scss' as *;
 
 :host {
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: 9999;
+  height: 100vh;
+  width: 100vw;
 }
 
-/* ───────────────── overlay ───────────────── */
 .overlay {
-  position: fixed;
+  position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
   padding: 16px;
-  background: rgba(
-    red($deep-black),
-    green($deep-black),
-    blue($deep-black),
-    0.35
-  );
+  background-color: rgba(0, 0, 0, 0);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
 
-/* ───────────────── modal ───────────────── */
 .modal {
   width: min(92vw, 560px);
   border-radius: 16px;
   overflow: hidden;
-  background: $light-gray;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.12);
+  background: var(--ion-color-light);
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.25),
+    0 2px 8px rgba(0, 0, 0, 0.12);
   transform: translateY(0) scale(0.98);
   opacity: 0;
   animation: modal-in 180ms ease-out forwards;
@@ -44,19 +42,18 @@
     align-items: center;
     gap: clamp(20px, 4vw, 40px) clamp(16px, 5vw, 48px);
 
-    /* 🧩 Padding responsivo */
     padding: clamp(20px, 4vw, 40px) clamp(16px, 5vw, 48px);
+    background: var(--ion-color-light);
 
-    /* conteúdo projetado (via ng-content) */
     ::ng-deep h2 {
-      color: $primary-red;
+      color: var(--modal-title);
       margin: 0;
       font-weight: 700;
       text-align: center;
     }
 
     ::ng-deep p {
-      color: $medium-gray-2;
+      color: var(--modal-subtitle);
       font-size: clamp(14px, 2.6vw, 16px);
       text-align: center;
       margin: 0;
@@ -64,12 +61,11 @@
   }
 }
 
-/* ───────────────── barra superior ───────────────── */
 .bar {
   display: grid;
   place-items: center;
   height: clamp(44px, 9vw, 56px);
-  background: $dark-gray;
+  background: var(--ion-color-dark);
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 
   img {
@@ -79,7 +75,6 @@
   }
 }
 
-/* ───────────────── animações e acessibilidade ───────────────── */
 @media (prefers-reduced-motion: reduce) {
   .modal {
     animation: none;
@@ -102,6 +97,7 @@
 .modal.closing {
   animation: modal-out 140ms ease-in forwards;
 }
+
 @keyframes modal-out {
   from {
     opacity: 1;
@@ -113,14 +109,12 @@
   }
 }
 
-/* ───────────────── responsividade ───────────────── */
 @media (min-width: 768px) {
   .modal {
     width: min(88vw, 600px);
   }
 }
 
-/* ───────────────── gerais ───────────────── */
 .overlay,
 .modal {
   pointer-events: auto;
@@ -130,4 +124,9 @@
   --modal-bg: var(--ion-color-light);
   --modal-title: var(--ion-color-primary);
   --modal-subtitle: var(--ion-color-medium);
+}
+
+.controls {
+  display: flex;
+  gap: 2.5vw;
 }

@@ -9,8 +9,8 @@ describe('AccessPageComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AccessPageComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [AccessPageComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AccessPageComponent);

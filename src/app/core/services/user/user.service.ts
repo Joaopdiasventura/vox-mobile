@@ -31,4 +31,8 @@ export class UserService {
   public validateAccount(token: string): Observable<User> {
     return this.http.patch<User>(`${this.apiUrl}/validateAccount/${token}`, {});
   }
+
+  public resetPassword(email: string): Observable<User> {
+    return this.http.patch<User>(`${this.apiUrl}/resetPassword/${email}`, {});
+  }
 }

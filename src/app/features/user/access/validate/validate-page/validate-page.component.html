@@ -1,9 +1,0 @@
-@if (isLoading()) {
-<loading />
-} @else if (showModal()) {
-<modal icon="error" [onClose]="closeModal">
-  <h2 class="title">Ops! Algo deu errado</h2>
-  <p class="subtitle">{{ modalMessage() }}</p>
-  <ion-button fill="outline" (click)="closeModal()">FECHAR</ion-button>
-</modal>
-}
