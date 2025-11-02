@@ -1,0 +1,178 @@
+:host {
+  flex: 1;
+  padding: clamp(var(--spacing-l), 5vh, var(--spacing-xl));
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: var(--ion-color-light);
+  overflow-x: hidden;
+  overflow-y: auto;
+  gap: clamp(var(--spacing-l), 5vh, var(--spacing-xl));
+
+  .start-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(var(--spacing-m), 3vh, var(--spacing-l));
+
+    .welcome-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(var(--spacing-xs), 1vh, var(--spacing-s));
+
+      img {
+        width: 20vw;
+      }
+
+      h1 {
+        text-align: center;
+      }
+    }
+
+    .links-container {
+      width: 50%;
+      display: flex;
+      justify-content: space-evenly;
+
+      a {
+        width: 3vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: clamp(var(--spacing-xs), 1vh, var(--spacing-s));
+        cursor: pointer;
+
+        img {
+          text-align: center;
+          padding: clamp(var(--spacing-xs), 0.5vw, var(--spacing-s));
+          border-radius: 0.25rem;
+          width: 100%;
+          aspect-ratio: 1 / 1;
+          background-color: var(--ion-background-color);
+        }
+
+        p {
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(var(--spacing-m), 3vh, var(--spacing-l));
+    width: 80%;
+
+    .elections-container,
+    .sessions-container {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: clamp(var(--spacing-m), 2.5vw, var(--spacing-l));
+    }
+
+    .sessions-container session-card,
+    .elections-container election-card {
+      flex: 1 1 calc(50% - var(--spacing-m));
+      max-width: calc(50% - var(--spacing-m));
+    }
+
+    .sessions-container session-card:only-child,
+    .elections-container election-card:only-child {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+
+    .sessions-container session-card:nth-child(odd):last-child,
+    .elections-container election-card:nth-child(odd):last-child {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+
+    h3 {
+      width: 100%;
+      text-align: center;
+    }
+
+    .link-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+
+      a {
+        cursor: pointer;
+        padding: clamp(var(--spacing-xs), 0.3vw, var(--spacing-s));
+        border-radius: 0.4rem;
+        border: 2px solid var(--ion-color-primary);
+        display: flex;
+        height: auto;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(var(--spacing-xs), 0.5vw, var(--spacing-s));
+        text-decoration: none;
+        color: var(--ion-color-primary);
+      }
+    }
+  }
+
+  footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+
+    .content {
+      width: 80%;
+      padding: clamp(var(--spacing-s), 1vw, var(--spacing-m));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--ion-background-color);
+      border-radius: 0.4rem;
+
+      p {
+        flex: 1;
+        text-transform: uppercase;
+        font-family: 'Azonix';
+        font-style: normal;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .icons {
+        display: flex;
+        align-items: center;
+        gap: clamp(var(--spacing-s), 1.5vw, var(--spacing-m));
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  :host {
+    position: relative;
+    display: flex;
+    flex: 1;
+    height: 100vh;
+    background-color: var(--ion-color-light);
+  }
+
+  .container {
+    .elections-container,
+    .sessions-container {
+      flex-direction: column;
+    }
+
+    .sessions-container session-card,
+    .elections-container election-card {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+  }
+}

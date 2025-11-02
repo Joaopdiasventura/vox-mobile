@@ -1,16 +1,8 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import {
-  FormBuilder,
-  Validators,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { Observable } from 'rxjs';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/user/auth/auth.service';
 import { UserService } from 'src/app/core/services/user/user.service';
-import { LoadingComponent } from 'src/app/shared/components/loading/loading.component';
-import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { CreateUserDto } from 'src/app/shared/dto/user/create-user.dto';
 import { LoginUserDto } from 'src/app/shared/dto/user/login-user.dto';
 import {
@@ -20,48 +12,43 @@ import {
   IonLabel,
   IonItem,
   IonInput,
-  IonButton,
-  IonText,
   IonList,
   IonImg,
+  IonInputPasswordToggle,
+  SegmentCustomEvent,
 } from '@ionic/angular/standalone';
 import { SocketService } from '../../../../core/services/socket/socket.service';
 import { User } from '../../../../core/models/user';
+import { CustomButtonComponent } from '../../../../shared/components/custom/custom-button/custom-button.component';
+import { UiStateService } from 'src/app/shared/services/ui-state/ui-state.service';
 
 @Component({
   selector: 'app-access-page',
   imports: [
     ReactiveFormsModule,
-    LoadingComponent,
-    ModalComponent,
     IonContent,
     IonSegment,
     IonSegmentButton,
     IonLabel,
     IonItem,
     IonInput,
-    IonButton,
-    IonText,
     IonList,
     IonImg,
-    RouterLink,
+    IonInputPasswordToggle,
+    CustomButtonComponent,
   ],
   templateUrl: './access-page.component.html',
   styleUrls: ['./access-page.component.scss'],
 })
 export class AccessPageComponent implements OnInit {
   public isRegisterActive = signal(false);
-  public isLoading = signal(false);
-
-  public hasError = signal(true);
-  public showModal = signal(false);
-  public modalMessage = signal('');
 
   private readonly socketService = inject(SocketService);
   private readonly userService = inject(UserService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
+  private readonly uiStateService = inject(UiStateService);
 
   private readonly emailValidator = [
     '',
@@ -72,7 +59,7 @@ export class AccessPageComponent implements OnInit {
     [
       Validators.required,
       Validators.pattern(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])[A-Za-z\d@$!%*?&_#]{8,}$/
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])[A-Za-z\d@$!%*?&_#]{8,}$/,
       ),
     ],
   ];
@@ -96,47 +83,86 @@ export class AccessPageComponent implements OnInit {
     this.isRegisterActive.update((value) => !value);
   }
 
-  public onSegmentChange(ev: any): void {
-    const value = ev?.detail?.value;
+  public onSegmentChange(ev: SegmentCustomEvent): void {
+    const value = ev.detail.value;
     this.isRegisterActive.set(value == 'register');
   }
 
-  public closeModal(): void {
-    this.showModal.set(false);
-  }
-
   public login(): void {
+    this.uiStateService.setLoading(true);
     this.userService.login(this.loginForm.value as LoginUserDto).subscribe({
       next: (response) => {
         localStorage.setItem('token', response.token);
         this.authService.updateUserData(response.user);
-        this.isLoading.set(false);
+        this.uiStateService.setLoading(false);
         this.router.navigate(['/']);
       },
       error: ({ error }) => {
-        this.modalMessage.set(error.message);
-        this.showModal.set(true);
-        this.isLoading.set(false);
+        this.uiStateService.setModalConfig({
+          icon: 'white/error',
+          title: 'Ops! Algo está errado',
+          message: error.message,
+          onClose: () => {
+            this.uiStateService.setModalConfig(null);
+          },
+        });
+        this.uiStateService.setLoading(false);
       },
     });
   }
 
   public create(): void {
     const dto = this.createForm.value as CreateUserDto;
+    this.uiStateService.setLoading(true);
     this.userService.create(dto).subscribe({
       next: () => {
-        this.showModal.set(true);
-        this.hasError.set(false);
+        this.uiStateService.setModalConfig({
+          icon: 'white/hourglass',
+          title: 'Aguardando sua resposta',
+          message: 'Mandamos um email para validar sua conta',
+          onClose: () => this.uiStateService.setModalConfig(null),
+        });
         this.socketService.open(dto.email);
         this.socketService.on(
           'email-validated',
-          this.onAccountValidated.bind(this)
+          this.onAccountValidated.bind(this),
         );
       },
       error: ({ error }) => {
-        this.modalMessage.set(error.message);
-        this.showModal.set(true);
-        this.isLoading.set(false);
+        this.uiStateService.setModalConfig({
+          icon: 'white/error',
+          title: 'Ops! Algo está errado',
+          message: error.message,
+          onClose: () => this.uiStateService.setModalConfig(null),
+        });
+        this.uiStateService.setLoading(false);
+      },
+    });
+  }
+
+  public resetPassword(): void {
+    const dto = this.loginForm.value as LoginUserDto;
+    this.uiStateService.setLoading(true);
+    this.userService.resetPassword(dto.email).subscribe({
+      next: () => {
+        this.uiStateService.setModalConfig({
+          icon: 'hourglass',
+          title: 'Verifique seu email',
+          message: 'Mandamos um email para recuperar sua conta',
+          onClose: () => this.uiStateService.setModalConfig(null),
+        });
+        this.uiStateService.setLoading(false);
+      },
+      error: ({ error }) => {
+        this.uiStateService.setModalConfig({
+          icon: 'error',
+          title: 'Ops! Algo está errado',
+          message: error.message,
+          onClose: () => {
+            this.uiStateService.setModalConfig(null);
+          },
+        });
+        this.uiStateService.setLoading(false);
       },
     });
   }

@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'joaopdias.vox',
+  appId: 'joaopdias.vox.app',
   appName: 'Vox',
   webDir: 'www'
 };

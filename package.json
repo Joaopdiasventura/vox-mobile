@@ -1,15 +1,20 @@
 {
   "name": "vox",
   "version": "0.0.1",
-  "author": "Ionic Framework",
+  "author": "joaopdias.dev@gmail.com",
   "homepage": "https://ionicframework.com/",
+  "main": "desktop.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:desk": "yarn build && npx electron desktop.js",
     "build": "ng build",
+    "build:win": "yarn build && electron-builder --win",
+    "build:linux": "yarn build && electron-builder --linux",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.html\" \"src/**/*.scss\""
   },
   "private": true,
   "dependencies": {
@@ -44,11 +49,15 @@
     "@angular/cli": "^20.0.0",
     "@angular/compiler-cli": "^20.0.0",
     "@angular/language-service": "^20.0.0",
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "7.4.4",
     "@ionic/angular-toolkit": "^12.0.0",
     "@types/jasmine": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "7.11.0",
     "@typescript-eslint/parser": "7.11.0",
+    "angular-eslint": "^20.5.2",
+    "electron": "^39.2.2",
+    "electron-builder": "^26.0.12",
     "eslint": "8.57.1",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsdoc": "^48.2.1",
@@ -60,7 +69,20 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.8.0"
+    "prettier": "^3.6.2",
+    "typescript": "~5.8.0",
+    "typescript-eslint": "^8.46.3"
+  },
+  "build": {
+    "appId": "com.vox.desktop",
+    "productName": "Vox",
+    "directories": {
+      "output": "desktop/release"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon-foreground.png"
+    }
   },
   "description": "An Ionic project"
 }

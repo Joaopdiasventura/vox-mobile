@@ -1,43 +1,41 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { LoadingComponent } from '../../../../../shared/components/loading/loading.component';
+import { Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../../../core/services/user/user.service';
 import { AuthService } from '../../../../../core/services/user/auth/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ModalComponent } from '../../../../../shared/components/modal/modal.component';
-import { IonButton } from '@ionic/angular/standalone';
+import { UiStateService } from '../../../../../shared/services/ui-state/ui-state.service';
 
 @Component({
-  imports: [IonButton, LoadingComponent, ModalComponent],
   selector: 'app-validate-page',
   templateUrl: './validate-page.component.html',
   styleUrls: ['./validate-page.component.scss'],
+  imports: [],
 })
 export class ValidatePageComponent implements OnInit {
-  public isLoading = signal(true);
-  public showModal = signal(false);
-  public modalMessage = signal('');
-
-  private readonly userService = inject(UserService);
+  private readonly uiStateService = inject(UiStateService);
   private readonly authService = inject(AuthService);
-  private readonly route = inject(ActivatedRoute);
+  private readonly userService = inject(UserService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   public ngOnInit(): void {
-    const token = this.route.snapshot.paramMap.get('token') as string;
-    this.userService.validateAccount(token).subscribe({
-      next: (user) => {
-        this.authService.updateUserData(user);
-        this.router.navigate(['/']);
-      },
-      error: ({ error }) => {
-        this.modalMessage.set(error.message);
-        this.showModal.set(true);
-        this.isLoading.set(false);
+    this.uiStateService.setLoading(true);
+    this.route.paramMap.subscribe({
+      next: (params) => {
+        const token = params.get('token');
+        if (!token) return;
+        this.userService.validateAccount(token).subscribe({
+          next: (user) => {
+            localStorage.setItem('token', token);
+            this.authService.updateUserData(user);
+            this.router.navigate(['/']);
+            this.uiStateService.setLoading(false);
+          },
+          error: () => {
+            this.router.navigate(['/user', 'access']);
+            this.uiStateService.setLoading(false);
+          },
+        });
       },
     });
-  }
-
-  public closeModal(): void {
-    this.router.navigate(['/', 'user', 'access']);
   }
 }
