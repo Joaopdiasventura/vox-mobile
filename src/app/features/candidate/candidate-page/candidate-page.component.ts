@@ -84,7 +84,9 @@ export class CandidatePageComponent
   private loadElection(election: string): void {
     this.electionService.findById(election).subscribe({
       next: (result) => this.election.set(result),
-      error: () => this.router.navigate(['/session']),
+      error: () => {
+        this.router.navigate(['/session']);
+      },
       complete: () => this.loadPage(),
     });
   }

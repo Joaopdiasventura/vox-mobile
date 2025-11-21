@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { CreateElectionDto } from '../../../shared/dto/election/create-election.dto';
 import { Observable } from 'rxjs';

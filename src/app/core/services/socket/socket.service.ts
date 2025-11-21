@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 
@@ -17,7 +19,7 @@ export class SocketService {
     this.socket.emit(event, data);
   }
 
-  public on(event: string, handler: (data: any) => void): void {
+  public on(event: string, handler: (...args: any[]) => void): void {
     this.socket.on(event, handler);
   }
 

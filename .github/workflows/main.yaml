@@ -1,4 +1,4 @@
-name: Continuous Integration and Deployment
+name: Continuous Testing
 
 on:
   push:
@@ -31,12 +31,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: npm
+          cache: yarn
       - name: Install
-        run: npm ci
+        run: yarn install --frozen-lockfile
       - name: Lint
-        run: npm run lint
-      - name: Test
-        run: npm test
+        run: yarn lint
       - name: Build
-        run: npm run build
+        run: yarn build
