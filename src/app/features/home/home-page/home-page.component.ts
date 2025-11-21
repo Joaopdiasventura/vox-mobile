@@ -54,7 +54,9 @@ export class HomePageComponent implements OnInit {
           this.elections.set(elections);
           this.sessions.set(sessions);
         },
-        error: () => this.router.navigate(['/user', 'access']),
+        error: () => {
+          this.router.navigate(['/user', 'access']);
+        },
       });
   }
 
@@ -70,7 +72,9 @@ export class HomePageComponent implements OnInit {
       .pipe(finalize(() => this.uiStateService.setLoading(false)))
       .subscribe({
         next: (sessions) => this.sessions.set(sessions),
-        error: () => this.router.navigate(['/user', 'access']),
+        error: () => {
+          this.router.navigate(['/user', 'access']);
+        },
       });
   }
 
@@ -82,7 +86,9 @@ export class HomePageComponent implements OnInit {
       .pipe(finalize(() => this.uiStateService.setLoading(false)))
       .subscribe({
         next: (elections) => this.elections.set(elections),
-        error: () => this.router.navigate(['/user', 'access']),
+        error: () => {
+          this.router.navigate(['/user', 'access']);
+        },
       });
   }
 }
